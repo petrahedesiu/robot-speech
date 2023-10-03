@@ -1,23 +1,37 @@
 import logo from './logo.svg';
 import './App.css';
+import { supabase } from './supabaseClient';
 
 function App() {
+
+  var prevSpeechOption = "off"
+  const onClickHandler = async(event, speechOption) => {
+    if (prevSpeechOption===speechOption)
+      speechOption = "off"
+    console.log(speechOption);
+    const { error } = await supabase
+        .from('Settings')
+        .update({ Value: speechOption})
+        .eq('Name', 'robot_presentation')
+        prevSpeechOption = speechOption
+  }
+
+  var prevSpeechOption2 = "off"
+  const onClickHandler2 = async(event, speechOption) => {
+      if (prevSpeechOption2===speechOption)
+        speechOption = "off"
+      console.log(speechOption);
+      const { error } = await supabase
+          .from('Settings')
+          .update({ Value: speechOption})
+          .eq('Name', 'speech_demo_1')
+          prevSpeechOption2 = speechOption
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+        <button onClick={(event) => onClickHandler(event, "on")}> Present robot </button>
+        <button onClick={(event) => onClickHandler2(event, "on")}> Speech Demo 1 </button>
     </div>
   );
 }
